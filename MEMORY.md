@@ -52,6 +52,15 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - **Not yet verified on a real iPhone/iPad** (silent-switch sound, first-tap unlock, voices) — needs a hosted link to test.
 - **Hosting is now required**: iPhone/iPad/Windows can't open a file on Matt's Mac. → Solved with GitHub Pages (see below).
 
+### Session 1 (cont.) — iPhone voice not playing (fix attempt)
+- Matt: no voice on his iPhone, even after downloading Kate. Couldn't test on a real iPhone (no iOS simulator on this Mac), so fixed the known Safari/iPhone speech pitfalls:
+  1. First question is now spoken **inside Maddy's tap** (iOS blocks speech not started by a tap; it used to be delayed 350 ms by a timer).
+  2. Removed the blank "unlock" utterance and only call `speechSynthesis.cancel()` when something is actually speaking (Safari can drop speech queued straight after cancel).
+  3. **Silent-voice fallback:** if a voice doesn't start within 2 s or errors, it's marked as bad on this device (`localStorage` key `maddyMathParty.badVoices`) and the next-best voice is tried (up to 2 retries). Some downloaded Enhanced/Premium voices are known to be silent in Safari.
+- Grown-up settings → Voice: ▶︎ Test now shows a live status line ("✔ Speaking with Kate…", "… X didn't start — trying another voice", "✖ …"), the number of voices found, a "Can't hear the voice?" checklist (silent switch, media volume, close/reopen Safari after downloading voices, check Kate in iPhone Settings) and a "Re-check skipped voices" button.
+- Likely phone-side cause to check: **silent switch** — Safari speech is often muted on silent even though game sounds play.
+- Tested on Mac: fallback works when a voice is forced silent. **Still needs confirming on Matt's iPhone.**
+
 ### Session 1 (cont.) — Published on GitHub + GitHub Pages
 - Matt isn't on a paid GitHub plan, so Pages needs a **public** repo (Pages from a private repo requires GitHub Pro). Matt chose **public**.
 - Created `mvprice3/maddy-math-party` (public), pushed everything (game, icons, manifest, PRD, MEMORY, CLAUDE.md, README), turned on GitHub Pages from `main` /.

@@ -196,6 +196,12 @@
   .voice-pick { display: flex; gap: 8px; }
   .voice-pick select { flex: 1; min-width: 0; font: inherit; font-size: 1rem; padding: 8px 10px; border-radius: 14px; border: 2px solid #f2d4e5; background: #fff; color: var(--ink); }
   .voice-pick button { background: var(--accent); color: #fff; border-radius: 14px; padding: 8px 16px; font-weight: 800; min-height: 44px; flex: none; }
+  .voice-status { margin: 8px 0 0; padding: 8px 12px; border-radius: 12px; background: #fdf2f8; font-weight: 700; font-size: .98rem; }
+  .help { margin-top: 8px; background: #fffaf0; border-radius: 14px; padding: 6px 12px; font-size: .95rem; }
+  .help summary { font-weight: 800; cursor: pointer; padding: 4px 0; }
+  .help ol { margin: 6px 0 4px; padding-left: 20px; }
+  .help li { margin-bottom: 6px; line-height: 1.35; }
+  .help .link-btn { padding: 0; font-size: inherit; }
   .tip { font-size: .92rem; color: #7a5070; margin: 8px 0 0; line-height: 1.35; }
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
   .stat { background: #fdf2f8; border-radius: 16px; padding: 8px; text-align: center; }
@@ -566,14 +572,9 @@ function unlockAudio() {
     const b = actx.createBuffer(1, 1, 22050), s = actx.createBufferSource();
     s.buffer = b; s.connect(actx.destination); s.start(0);
   } catch (e) {}
-  try {
-    if ('speechSynthesis' in window) {
-      const u = new SpeechSynthesisUtterance(' ');
-      u.volume = 0;
-      speechSynthesis.speak(u);
-      if (!voices.length) loadVoices();
-    }
-  } catch (e) {}
+  // Speech is unlocked by the first real question, which is spoken inside Maddy's tap.
+  // (A blank "unlock" utterance would just get cancelled, which Safari can mishandle.)
+  try { if ('speechSynthesis' in window && !voices.length) loadVoices(); } catch (e) {}
 }
 ['pointerdown', 'touchend', 'click'].forEach(ev => document.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
 function tone(f, t, d, type = 'sine', vol = .15) {
@@ -657,25 +658,64 @@ if ('speechSynthesis' in window) {
   speechSynthesis.addEventListener?.('voiceschanged', loadVoices);
 }
 function autoVoice() {
-  return voices.filter(v => voiceScore(v) > 0).sort((a, b) => voiceScore(b) - voiceScore(a))[0] || null;
+  return voices.filter(v => voiceScore(v) > 0 && !badVoices.has(v.name)).sort((a, b) => voiceScore(b) - voiceScore(a))[0] || null;
 }
 function pickVoice() {
   if (data.settings.voice) {
     const v = voices.find(v => v.name === data.settings.voice);
-    if (v) return v;
+    if (v && !badVoices.has(v.name)) return v;
   }
   return autoVoice();
 }
-function speak(text, force) {
-  if ((!data.settings.sound && !force) || !('speechSynthesis' in window)) return;
+/* Voices that failed to make any sound on this device (e.g. some downloaded
+   "Enhanced"/"Premium" voices are silent in iPhone Safari). Remembered on this device. */
+const BAD_VOICES_KEY = 'maddyMathParty.badVoices';
+let badVoices = new Set();
+try { badVoices = new Set(JSON.parse(localStorage.getItem(BAD_VOICES_KEY)) || []); } catch (e) {}
+function markBadVoice(name) {
+  badVoices.add(name);
+  try { localStorage.setItem(BAD_VOICES_KEY, JSON.stringify([...badVoices])); } catch (e) {}
+}
+let speakSeq = 0;
+function speak(text, force, onStatus) {
+  if ((!data.settings.sound && !force) || !('speechSynthesis' in window)) {
+    onStatus?.('✖ Sounds are switched off in settings');
+    return;
+  }
+  const clean = text.replace(/[^\w\s!?,.'’-]/g, '').trim();
   try {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text.replace(/[^\w\s!?,.'’-]/g, '').trim());
-    const v = pickVoice();
-    if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'en-GB';
-    u.rate = .92; u.pitch = 1.05; // slightly slower and warm, not squeaky
-    speechSynthesis.speak(u);
-  } catch (e) {}
+    // Safari on iPhone can drop speech that starts straight after cancel(), so only cancel when needed
+    if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
+    if (speechSynthesis.paused) speechSynthesis.resume();
+    sayWith(clean, pickVoice(), onStatus, 2, ++speakSeq);
+  } catch (e) { onStatus?.('✖ Speech error: ' + e.message); }
+}
+function sayWith(text, v, onStatus, retries, seq) {
+  const u = new SpeechSynthesisUtterance(text);
+  if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'en-GB';
+  u.rate = .92; u.pitch = 1.05; u.volume = 1; // slightly slower and warm, not squeaky
+  const label = v ? v.name : 'the iPhone’s default voice';
+  let started = false, done = false;
+  const tryNext = why => {
+    if (done || seq !== speakSeq) return;
+    done = true;
+    if (v) markBadVoice(v.name);
+    if (retries > 0) {
+      onStatus?.(`… ${label} ${why} — trying another voice`);
+      try { speechSynthesis.cancel(); } catch (e) {}
+      sayWith(text, v ? pickVoice() : null, onStatus, retries - 1, seq);
+    } else onStatus?.(`✖ No voice could speak (${why})`);
+  };
+  u.onstart = () => { started = true; onStatus?.(`✔ Speaking with ${label}`); };
+  u.onend = () => { done = true; if (started) onStatus?.(`✔ Finished speaking with ${label}`); };
+  u.onerror = e => {
+    if (e.error === 'interrupted' || e.error === 'canceled') { done = true; return; }
+    if (!started) tryNext(`gave an error (${e.error})`);
+    else onStatus?.(`✖ ${label} error: ${e.error}`);
+  };
+  speechSynthesis.speak(u);
+  // If the voice never starts (silent voice), move on to the next one
+  setTimeout(() => { if (!started && !speechSynthesis.speaking) tryNext('didn’t start'); }, 2000);
 }
 
 function confetti(world) {
@@ -802,7 +842,11 @@ function renderQuestion() {
   $('#nextBtn').style.display = 'none';
   $('#choices').innerHTML = makeChoices(q.ans).map(v => `<button class="choice" data-v="${v}">${v}</button>`).join('');
   document.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(b));
-  if (data.settings.autoRead) setTimeout(() => speak(`What is ${say(q)}?`), 350);
+  if (data.settings.autoRead) {
+    // first question: speak right inside Maddy's tap so iPhone allows it; later ones after a short pause
+    if (game.i === 0) speak(`What is ${say(q)}?`);
+    else setTimeout(() => speak(`What is ${say(q)}?`), 350);
+  }
 }
 
 function bounceMascot(cls) {
@@ -1015,10 +1059,29 @@ function renderVoiceRow() {
       </select>
       <button id="voiceTest">▶︎ Test</button>
     </div>
+    <p class="voice-status" id="voiceStatus">Tap ▶︎ Test to check the voice. ${voices.length} English voice${voices.length === 1 ? '' : 's'} found on this device${badVoices.size ? ` (${badVoices.size} skipped because they were silent)` : ''}.</p>
+    <details class="help">
+      <summary>Can’t hear the voice?</summary>
+      <ol>
+        <li><b>iPhone/iPad silent switch:</b> speech in Safari is often muted on silent. Flip the switch on the side so the orange stripe is hidden (or turn Silent Mode off in Control Centre).</li>
+        <li><b>Volume:</b> press ▶︎ Test, then press volume-up <i>while it’s talking</i> — that sets the media volume, which is separate from the ringer.</li>
+        <li><b>After downloading a voice</b> (e.g. Kate): fully close Safari (swipe it away) or the Home Screen app, then reopen the game.</li>
+        <li><b>Still silent?</b> Press ▶︎ Test and read the message above. If a voice is silent, the game skips it and tries the next one. <button class="link-btn" id="voiceReset" type="button">Re-check skipped voices</button></li>
+        <li><b>Check the iPhone itself:</b> Settings → Accessibility → Spoken Content → Voices → English (UK) → tap ▶︎ next to Kate. If you hear nothing there either, it’s the phone’s volume or silent mode.</li>
+      </ol>
+    </details>
     <p class="tip">For the most human voice: on iPad/iPhone go to Settings → Accessibility → Spoken Content → Voices → English (UK) and download <b>Serena (Premium)</b> or <b>Kate (Enhanced)</b>, then reopen this page. On a computer, Microsoft Edge’s “Natural” voices (Libby, Sonia) or Chrome’s “Google UK English Female” sound best.</p>
   </div>`;
   $('#voiceSel').onchange = e => { data.settings.voice = e.target.value; save(); };
-  $('#voiceTest').onclick = () => speak('Hello Maddy! What is seven plus three? Well done, Maddy!', true);
+  $('#voiceTest').onclick = () => {
+    $('#voiceStatus').textContent = '… starting';
+    speak('Hello Maddy! What is seven plus three? Well done, Maddy!', true, msg => { const el = $('#voiceStatus'); if (el) el.textContent = msg; });
+  };
+  $('#voiceReset').onclick = () => {
+    badVoices = new Set();
+    try { localStorage.removeItem(BAD_VOICES_KEY); } catch (e) {}
+    renderVoiceRow();
+  };
 }
 
 function openSettings() { renderSettings(); $('#settings').classList.add('open'); }

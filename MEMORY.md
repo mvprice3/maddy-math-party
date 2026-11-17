@@ -10,7 +10,14 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - `index.html` — the whole game (HTML + CSS + vanilla JS, no install). Open it in any browser.
 - `icon-180.png`, `icon-512.png` — app icon (Callie on pink) for iPhone/iPad "Add to Home Screen" and Windows.
 - `manifest.webmanifest` — lets Edge on Windows install it as an app.
+- `README.md` — GitHub front page with the play link.
+- `.gitignore` — keeps Mac `.DS_Store` files out of git.
 - `MEMORY.md` — this file.
+
+## Where it lives
+- **Play link (anyone can open):** https://mvprice3.github.io/maddy-math-party/
+- **Code (public GitHub repo):** https://github.com/mvprice3/maddy-math-party — branch `main`; GitHub Pages serves the repo root of `main`.
+- To update the live game: commit and push to `main`; Pages rebuilds in ~1 minute.
 
 ## Progress log
 ### Session 1 — 17 Nov 2026
@@ -43,7 +50,15 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - Layout: compact play screen on phones (max-width 699 & max-height 820); 4 answers in one row on wide screens (iPad, Windows); trimmed layout for wide-but-short screens. Measured: whole question incl. all 4 answers fits on iPhone SE in Safari (375×548), iPhone 15 (390×664), iPad landscape (1024×690), iPad portrait (820×1100), Windows laptop (1366×620). No sideways scrolling anywhere.
 - Windows 10 emoji safety: swapped emoji newer than Emoji 12 (🫧→💫, 🪩→🎊, 🪞→👒, 🧋→🥤) — they'd show as empty boxes on Windows 10. All emoji now ≤ Emoji 12.
 - **Not yet verified on a real iPhone/iPad** (silent-switch sound, first-tap unlock, voices) — needs a hosted link to test.
-- **Hosting is now required**: iPhone/iPad/Windows can't open a file on Matt's Mac. Open decision: how to host (private link).
+- **Hosting is now required**: iPhone/iPad/Windows can't open a file on Matt's Mac. → Solved with GitHub Pages (see below).
+
+### Session 1 (cont.) — Published on GitHub + GitHub Pages
+- Matt isn't on a paid GitHub plan, so Pages needs a **public** repo (Pages from a private repo requires GitHub Pro). Matt chose **public**.
+- Created `mvprice3/maddy-math-party` (public), pushed everything (game, icons, manifest, PRD, MEMORY, CLAUDE.md, README), turned on GitHub Pages from `main` /.
+- Commits use Matt's GitHub noreply email (`…+mvprice3@users.noreply.github.com`) so his real email isn't in public history. Git name/email set for this repo only (no global git identity on his Mac).
+- Checked live: page, icon and manifest load; a full round plays; progress and stickers save (localStorage works on the real web address, unlike the local file preview).
+- Fixed a timing bug found on the live site: Callie's end-of-round pop-up (scheduled 0.9s after results) appeared on the home screen if Maddy tapped "New world" quickly. Now cancelled when she leaves the results screen.
+- Still to do: try it on a real iPhone/iPad/Windows machine (sound on silent, first-tap unlock, voice quality).
 
 ### Session 1 (cont.) — PRD v1.5: fourth world, Callie's Puppy Park
 - Matt asked for a **dog-themed fourth world** → **Callie's Puppy Park**. Callie is the world's mascot (with her "🐾 Callie" name tag on the play screen too), counters 🐶 + 🦴, park-green + toller-ginger colours, dog cheers ("Pawsome!", "Woof-tastic!", "Fetch-tastic!"…), 15 dog stickers (all Emoji ≤12 so they work on Windows 10; includes 🦆 because tollers are duck dogs).
@@ -73,5 +88,4 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - "Success" for a round = at least half the stars (easy to change: `success` in `finishRound`).
 
 ## Ideas for next time
-- Put it online (private link) so Maddy can open it on her tablet.
 - v2 ideas in PRD §9: number-pad typing mode, missing-number problems, dress-up rewards, adaptive practice of tricky facts, multiple profiles.

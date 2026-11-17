@@ -910,7 +910,9 @@ function finishRound() {
   sfx('win'); confetti(game.world);
   if (success) {
     setTimeout(() => confetti(game.world), 700);
-    setTimeout(() => callieCheer('Well done, Maddy!'), 900);
+    // stored in callieTimer so leaving the results screen early cancels it
+    clearTimeout(callieTimer);
+    callieTimer = setTimeout(() => callieCheer('Well done, Maddy!'), 900);
     speak(`Well done, Maddy! You got ${stars} stars! With love from Uncle Matt.`);
   } else {
     speak(`Great try, Maddy! You got ${stars} stars. Let's play again! With love from Uncle Matt.`);

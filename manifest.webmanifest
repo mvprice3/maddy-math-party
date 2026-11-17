@@ -1,0 +1,13 @@
+{
+  "name": "Maddy's Math Party",
+  "short_name": "Maddy Maths",
+  "description": "A math game for Maddy — with love from Uncle Matt",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffe3f1",
+  "theme_color": "#ffc4e4",
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

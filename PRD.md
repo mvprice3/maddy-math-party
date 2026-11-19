@@ -1,6 +1,6 @@
 # Maddy's Math Party — Product Requirements Doc
 
-**Version:** 1.6 · **Date:** 19 Nov 2026 · **Status:** live (adds optional missing-number questions)
+**Version:** 1.7 · **Date:** 19 Nov 2026 · **Status:** built, awaiting push (adds Beat the Clock test mode and a Progress tab for Maddy's mum)
 
 ## 1. Summary
 A playful website where Maddy (age 6) practises addition and subtraction. It's wrapped in the things she loves — fashion dolls, surprise-ball dolls and squishy dumpling toys — so practice feels like play. Numbers start at up to 12, including 12 (where she is today) and a grown-up can raise the limit as she grows.
@@ -72,12 +72,37 @@ Each world has its own mascot, colours and cheer phrases.  Find a way to incorpo
 - **Read questions aloud automatically:** on / off. **Sounds:** on / off.
 - **Progress:** rounds played, total stars, accuracy over the last 5 rounds.
 - **Level-up nudge:** after 2 rounds in a row with 9–10 stars, the grown-up area shows "Maddy is ready for bigger numbers!" with a one-tap "Make it harder" button.
-- **Reset progress.**
+- **Beat the Clock length:** 1 / 2 / 3 / 4 / 5 minutes (default 1). See 5.5.
+- **Two tabs:** ⚙️ Settings and 📈 Progress (see 5.6).
+- **Reset progress** (also clears Beat the Clock records and Progress history).
+
+### 5.5 Beat the Clock (Test mode)
+Requested by Maddy's mum: how many right answers in a set time. The sticker game stays as relaxed practice.
+- **Always on the home screen** as "⏱ Beat the Clock" (gold button under the four worlds) showing her best for the current settings, e.g. "Best: 14 · 1 min". Grown-up settings call it "Test mode".
+- **Length:** 1 minute by default; grown-up can choose up to 5 minutes.
+- **Same difficulty as practice** (numbers up to, adding/taking away, classic/missing number).
+- **3, 2, 1, Go!** then sums keep coming. **One tap per sum:** right → quick chime and straight to the next; wrong → the right answer shows for a moment, then the next sum. No second tries, so the score means something.
+- Built for speed: no picture counters, no automatic read-aloud (🔊 still available).
+- **Timer = Callie running towards a bone 🦴** along a **small, thin track in the top bar** — deliberately not big, to avoid undue pressure. Soft colours that never turn red, no flashing, no ticking numbers for Maddy (a tiny grey "time left" for grown-ups), gentle bone wiggle in the last 10 seconds, no buzzer. The sum and answers stay the biggest things on screen.
+- If the device is put away mid-test, the clock pauses. Leaving a test early saves nothing.
+- **Results:** "You got 14 right!" + "out of 17 tried". **New record** → 🏆 badge, confetti, Callie pops up: "Well done, Maddy! New record!". Otherwise: "Your best is 16. Try again?" (or "You matched your best!"). Note signed "With love from Uncle Matt".
+- **Records are kept per setup** (length + numbers up to + type + style), so changing settings starts a fresh best.
+- **No stickers** in Beat the Clock — stickers stay the reward for practice. Records appear as 🏆 trophies on a shelf in the sticker book.
+
+### 5.6 Progress tab (for Maddy's mum)
+In the grown-up area, next to Settings.
+- **What's measured (from the first round after this update; earlier rounds had no timing):** for every sum — time from appearing to her first tap, whether that first tap was right, the sum itself, adding/taking away, classic/missing number, and the number limit.
+- **Accuracy** = % right on first tap. **Speed** = typical (median) seconds per sum. **60-second rule:** sums that took longer than 60 s don't count toward speed (she was probably away from the screen) but still count for accuracy.
+- **Headline numbers** for the chosen period (2 weeks / month / all): right first try, typical time per sum, sums answered — with change vs earlier days once there are 4+ play days.
+- **Trend graph** appears after **3 play days with 10+ sums each**. One plot per play day; accuracy and seconds per sum; a marker where the number limit changed. Caption: **"One plot per day she played (days with 10+ sums)"**. Before that: "Trends appear after 3 days of play" with 1-of-3 progress dots and today's numbers.
+- **By type** (adding, taking away, classic, missing number) and **trickiest sums lately** (tried 2+ times, missed at least once).
+- **Beat the Clock scores:** graph with one plot per test at the current settings (gold = new record) and personal-best trophies. Test answers are kept separate from practice charts.
+- Practice data only from this device (see 8).
 
 ## 6. Design principles
 - **Tap targets ≥ 64px**, works on iPad/tablet first, phones and laptops too.
 - **No reading needed** to play: icons, pictures, read-aloud.
-- **Always encouraging:** no red X, no timer, no losing.
+- **Always encouraging:** no red X, no losing. **No timer in practice** — a timer appears only in Beat the Clock (5.5), and even there it's small and calm.
 - Bright, pink-forward palette, rounded bubbly shapes, chunky friendly font.
 - Short sessions: a round takes ~3–5 minutes.
 
@@ -100,14 +125,15 @@ Because neither device can open a file stored on Uncle Matt's Mac, the game **mu
 - Read-aloud via the browser's built-in speech (Speech Synthesis). **Voice: British, female, as natural/human as possible.** The game automatically picks the best British female voice on the device (preferring "Natural", "Premium" and "Enhanced" voices, and avoiding novelty/robotic ones), with a slightly slower, warm delivery. A grown-up can pick a different voice and test it in settings.
   - Voice quality depends on the device: on iPad/iPhone, download **Serena (Premium)** or **Kate (Enhanced)** under Settings → Accessibility → Spoken Content → Voices → English (UK). On a computer, Microsoft Edge's "Natural" voices (e.g. Libby, Sonia) and Chrome's "Google UK English Female" sound the most human.
 - Progress & settings in `localStorage` (per device). No data leaves the device.
-- **Updates never wipe progress:** the save name (`maddyMathParty.v1`) stays the same; new settings are merged in with safe defaults, so stars, stickers and history carry over when the live site is updated.
+- **Updates never wipe progress:** the save name (`maddyMathParty.v1`) never changes; new settings and data are merged in with safe defaults and unknown fields are kept, so stars, stickers and history carry over when the live site is updated. On first load, v1.7 also stores a one-off backup of the old save (`maddyMathParty.v1.backup-before-tracking`), and an unreadable save is copied aside rather than overwritten. The game asks the browser to keep its data (`navigator.storage.persist()`).
+- **Safari note:** Safari can clear a website's saved data if the site isn't opened for about 7 days of Safari use. Adding the game to the iPad/iPhone **Home Screen** protects against this.
+- New saved data: `log` (one small entry per sum, capped at the latest 4,000), `tests` (Beat the Clock results), `bests` (personal bests per setup), `since` (when tracking started).
 - Hosted on GitHub Pages: https://mvprice3.github.io/maddy-math-party/ (public repo `mvprice3/maddy-math-party`).
 
 ## 9. Future ideas (v2+)
 - Typing answers on a number pad (harder mode) once she's confident.
 - Number bonds (e.g. all the pairs that make 10). *(Missing-number problems are now built — see 5.1a.)*
 - Dress-up reward: spend stars to dress a doll or decorate a dumpling.
-- Gentle timed "speed challenge" mode for older Maddy.
 - Adaptive difficulty that focuses on facts she gets wrong most.
 - Multiple player profiles (siblings/cousins).
 

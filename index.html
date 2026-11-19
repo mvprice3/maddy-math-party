@@ -255,6 +255,77 @@
   .letter p { margin: 0; font-size: 1.2rem; font-weight: 700; }
   .letter .sig { font-family: 'Caveat', cursive; font-size: 1.7rem; color: #c2185b; display: block; margin-top: 2px; }
 
+  /* ---------- Grown-up tabs + Progress ---------- */
+  .tabs { display: flex; gap: 6px; margin: -4px 0 12px; border-bottom: 2px solid #f2d4e5; }
+  .tab { background: none; padding: 8px 14px; font-weight: 800; font-size: 1.05rem; color: #9b6f8a; border-radius: 12px 12px 0 0; min-height: 44px; }
+  .tab.on { background: #fdf2f8; color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+  .pg-head { margin: 0 0 4px; font-size: 1.4rem; }
+  .pg-sub { margin: 0 0 10px; font-size: .92rem; color: #7a5070; }
+  .pills { display: flex; gap: 6px; margin: 0 0 12px; flex-wrap: wrap; }
+  .pills button { background: #f5eef3; border-radius: 999px; padding: 4px 12px; font-weight: 700; font-size: .95rem; min-height: 36px; }
+  .pills button.on { background: var(--accent); color: #fff; }
+  .stat small { display: block; font-size: .8rem; font-weight: 700; margin-top: 2px; }
+  .up { color: #1f8a5b; } .down { color: #b0306e; }
+  .chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: .85rem; color: #7a5070; margin: 12px 0 2px; }
+  .chart-legend i { display: inline-block; width: 16px; height: 0; border-top: 3px solid #1D9E75; vertical-align: middle; margin-right: 4px; }
+  .chart-legend i.dash { border-top: 3px dashed #D4537E; }
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { font-family: inherit; }
+  .pg-caption { text-align: center; font-size: .82rem; color: #9b8a95; margin: 0 0 6px; }
+  .pg-h3 { font-size: 1.1rem; margin: 16px 0 8px; }
+  .pg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .bars { display: grid; grid-template-columns: auto 1fr auto; gap: 6px 8px; align-items: center; font-size: .95rem; }
+  .bars .bar { height: 10px; border-radius: 99px; background: #f2e6ee; overflow: hidden; }
+  .bars .bar span { display: block; height: 100%; background: #5DCAA5; border-radius: 99px; }
+  .bars small { color: #7a5070; white-space: nowrap; }
+  .tricky { list-style: none; margin: 0; padding: 0; font-size: .95rem; }
+  .tricky li { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dashed #f2d4e5; padding: 4px 0; }
+  .tricky code { font-family: inherit; font-weight: 800; }
+  .empty { text-align: center; background: #fdf2f8; border-radius: 18px; padding: 16px; margin: 6px 0; }
+  .empty .dots3 { display: flex; gap: 8px; justify-content: center; margin: 8px 0; }
+  .empty .dots3 span { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #d9b8cb; }
+  .empty .dots3 span.on { background: #1D9E75; border-color: #1D9E75; }
+  .pg-note { font-size: .85rem; color: #9b8a95; margin: 12px 0 0; }
+
+  /* ---------- Beat the Clock ---------- */
+  .clock-btn {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    width: 100%; max-width: 640px; margin: 14px auto 0; padding: 12px 20px; min-height: 64px;
+    background: #fff4dc; border: 4px solid #ffc861; border-radius: 26px; box-shadow: 0 6px 0 rgba(74,29,61,.15);
+    font-size: clamp(1.3rem, 5vw, 1.6rem); font-weight: 800; color: #7a4a00;
+  }
+  .clock-btn small { font-size: 1rem; font-weight: 700; color: #a0650a; }
+  .clock-btn:active { transform: scale(.98); }
+  /* small, calm timer: a thin track in the top bar, not the star of the screen */
+  .track-wrap { flex: 1; max-width: 340px; display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .track { position: relative; height: 8px; margin: 22px 18px 0 6px; background: #d8efc4; border-radius: 99px; }
+  .trail { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 99px;
+    background: repeating-linear-gradient(90deg, #f4b860 0 10px, #eea64a 10px 14px); }
+  .runner { position: absolute; top: -24px; left: 0; width: 30px; height: 30px; margin-left: -15px; }
+  .runner-dog { width: 100%; height: 100%; animation: trot .4s ease-in-out infinite; }
+  .runner.stopped .runner-dog { animation: none; }
+  @keyframes trot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  .bone { position: absolute; right: -16px; top: -12px; font-size: 18px; line-height: 1; }
+  .bone.wiggle { animation: boneWig .5s ease-in-out infinite; }
+  @keyframes boneWig { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+  .time-left { text-align: right; font-size: .75rem; color: #9b8a95; margin-right: 18px; line-height: 1.4; }
+  .clock-score { background: var(--card); border-radius: 999px; padding: 6px 14px; font-size: 1.3rem; font-weight: 800; box-shadow: var(--shadow); min-width: 72px; text-align: center; }
+  .clock-card { margin-top: 18px; position: relative; }
+  .clock-choices { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .clock-choices .choice { min-height: 84px; font-size: clamp(1.8rem, 8vw, 3rem); }
+  .clock-choices .choice.right { animation: none; }
+  #clock { position: relative; }
+  .countdown { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none;
+    font-size: clamp(5rem, 25vw, 9rem); font-weight: 800; color: var(--accent); text-shadow: 4px 4px 0 #fff; }
+  .countdown.on { display: flex; }
+  .countdown span { animation: pop .6s; }
+  .record { text-align: center; margin: 14px auto 0; }
+  .record .badge { display: inline-block; background: #fff4dc; border: 3px solid #ffc861; color: #7a4a00; border-radius: 999px; padding: 6px 18px; font-weight: 800; font-size: 1.2rem; }
+  .record .meh { font-weight: 700; font-size: 1.2rem; }
+  .trophies { display: flex; flex-wrap: wrap; gap: 10px; }
+  .trophy { background: #fff4dc; border-radius: 18px; padding: 8px 14px; font-weight: 700; }
+  .trophy b { font-size: 1.3rem; }
+
   /* confetti */
   .confetti { position: fixed; top: -40px; z-index: 40; pointer-events: none; font-size: 26px; animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
@@ -337,7 +408,45 @@
   </div>
   <span class="chip" id="levelChip"></span>
   <div class="worlds" id="worlds"></div>
+  <button class="clock-btn" id="clockBtn"><span>⏱ Beat the Clock</span><small id="clockBest"></small></button>
   <p class="love">💌 <b>With love from Uncle Matt</b> 💌</p>
+</section>
+
+<!-- BEAT THE CLOCK (Test mode) -->
+<section class="screen" id="clock">
+  <div class="topbar">
+    <button class="icon-btn" id="clockQuit" aria-label="Go home">🏠</button>
+    <div class="track-wrap" aria-hidden="true">
+      <div class="track"><div class="trail" id="trail"></div>
+        <div class="runner" id="runner"><div class="runner-dog" id="runnerDog"></div></div>
+        <span class="bone" id="bone">🦴</span>
+      </div>
+      <small class="time-left" id="timeLeft"></small>
+    </div>
+    <div class="clock-score">⭐ <b id="clockScore">0</b></div>
+  </div>
+  <div class="question-card clock-card">
+    <div class="equation" id="clockEq"></div>
+    <button class="say-btn" id="clockSay">🔊 Hear it</button>
+  </div>
+  <div class="choices clock-choices" id="clockChoices"></div>
+  <div class="countdown" id="countdown"></div>
+</section>
+
+<!-- BEAT THE CLOCK RESULTS -->
+<section class="screen" id="clockResults">
+  <p class="sub" style="margin:10px 0 0">Time’s up! 🦴</p>
+  <h2 class="results-title" id="crTitle">You got 0 right!</h2>
+  <div class="score" id="crTried"></div>
+  <div class="record" id="crRecord"></div>
+  <div class="letter">
+    <div class="dog-wrap"><div class="dog" id="clockLetterCallie"></div><span class="callie-name">🐾 Callie</span></div>
+    <p><span id="crNote"></span><span class="sig">With love from Uncle Matt 💌</span></p>
+  </div>
+  <div class="row">
+    <button class="big-btn" id="crAgain">🔁 Try again</button>
+    <button class="big-btn alt" id="crHome">🏠 Home</button>
+  </div>
 </section>
 
 <!-- PLAY -->
@@ -407,15 +516,22 @@
 <!-- SETTINGS -->
 <div class="overlay" id="settings">
   <div class="panel">
-    <h2>Grown-up settings</h2>
-    <p>Changes save automatically on this device.</p>
-    <div id="nudge"></div>
-    <div id="setRows"></div>
-    <div id="voiceRow"></div>
-    <hr>
-    <h2 style="font-size:1.3rem">Maddy's progress</h2>
-    <div class="stats" id="stats"></div>
-    <ol class="history" id="history"></ol>
+    <div class="tabs" role="tablist">
+      <button class="tab on" id="tabBtnSettings" role="tab">⚙️ Settings</button>
+      <button class="tab" id="tabBtnProgress" role="tab">📈 Progress</button>
+    </div>
+    <div id="tabSettings">
+      <h2>Grown-up settings</h2>
+      <p>Changes save automatically on this device.</p>
+      <div id="nudge"></div>
+      <div id="setRows"></div>
+      <div id="voiceRow"></div>
+      <hr>
+      <h2 style="font-size:1.3rem">Rounds summary</h2>
+      <div class="stats" id="stats"></div>
+      <ol class="history" id="history"></ol>
+    </div>
+    <div id="tabProgress" hidden></div>
     <div class="panel-actions">
       <button class="link-btn" id="resetBtn">Reset all progress</button>
       <button class="big-btn" id="closeSettings" style="font-size:1.2rem;min-height:52px">Done ✓</button>
@@ -524,24 +640,59 @@ const NAME = 'Maddy';
    Storage (per device)
    ========================================================= */
 const STORE = 'maddyMathParty.v1';
+// NEVER rename STORE — Maddy's stickers and stars live under this name on her devices.
 const DEFAULTS = {
-  settings: { max: 12, ops: 'both', count: 10, counters: true, autoRead: true, sound: true, voice: '', style: 'classic' },
+  settings: { max: 12, ops: 'both', count: 10, counters: true, autoRead: true, sound: true, voice: '', style: 'classic', testMins: 1 },
   stickers: { doll: [], surprise: [], dumpling: [], puppy: [] },
   rounds: [],
+  log: [],      // one entry per sum, from the first round after the tracking update (for the Progress tab)
+  tests: [],    // Beat the Clock results
+  bests: {},    // Beat the Clock personal bests, per length + difficulty
+  since: null,  // when per-sum tracking started on this device
 };
+const BACKUP_KEY = STORE + '.backup-before-tracking';
 function load() {
-  try {
-    const d = JSON.parse(localStorage.getItem(STORE));
-    if (d) return {
-      settings: { ...DEFAULTS.settings, ...d.settings, ...(d.settings && d.settings.max === 11 ? { max: 12 } : {}) },
-      stickers: { ...JSON.parse(JSON.stringify(DEFAULTS.stickers)), ...d.stickers },
-      rounds: Array.isArray(d.rounds) ? d.rounds : [],
-    };
-  } catch (e) {}
+  let raw = null;
+  try { raw = localStorage.getItem(STORE); } catch (e) {}
+  if (raw) {
+    // one-off safety copy of the save as it was before this version changed anything
+    try { if (!localStorage.getItem(BACKUP_KEY)) localStorage.setItem(BACKUP_KEY, raw); } catch (e) {}
+    try {
+      const d = JSON.parse(raw);
+      if (d && typeof d === 'object') return {
+        ...d, // keep any fields we don't know about
+        settings: { ...DEFAULTS.settings, ...d.settings, ...(d.settings && d.settings.max === 11 ? { max: 12 } : {}) },
+        stickers: { ...JSON.parse(JSON.stringify(DEFAULTS.stickers)), ...d.stickers },
+        rounds: Array.isArray(d.rounds) ? d.rounds : [],
+        log: Array.isArray(d.log) ? d.log : [],
+        tests: Array.isArray(d.tests) ? d.tests : [],
+        bests: d.bests && typeof d.bests === 'object' ? d.bests : {},
+        since: d.since || null,
+      };
+    } catch (e) {
+      // unreadable save: keep a copy rather than silently overwriting it
+      try { localStorage.setItem(STORE + '.unreadable-' + Date.now(), raw); } catch (e2) {}
+    }
+  }
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
 let data = load();
-function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch (e) {} }
+function save() {
+  try {
+    if (data.log.length > 4000) data.log = data.log.slice(-4000);
+    if (data.tests.length > 500) data.tests = data.tests.slice(-500);
+    localStorage.setItem(STORE, JSON.stringify(data));
+  } catch (e) {}
+}
+// Ask the browser to keep this site's data (helps stop Safari clearing it after a while unused)
+try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}
+
+/* Per-sum tracking for the Progress tab: time to first tap and whether that tap was right */
+function logSum(q, secs, ok, mode) {
+  if (!data.since) data.since = Date.now();
+  data.log.push({ t: Date.now(), s: Math.round(secs * 10) / 10, ok: ok ? 1 : 0, a: q.a, b: q.b, op: q.op, h: q.hide, mx: data.settings.max, m: mode });
+  save();
+}
 
 /* =========================================================
    Helpers
@@ -553,7 +704,7 @@ const shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Ma
 
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
-  if (id !== 'results') { clearTimeout(callieTimer); $('#callie').classList.remove('show'); }
+  if (id !== 'results' && id !== 'clockResults') { clearTimeout(callieTimer); $('#callie').classList.remove('show'); }
   window.scrollTo(0, 0);
 }
 function setWorldTheme(w) { document.body.dataset.world = w || 'home'; }
@@ -750,6 +901,8 @@ function renderHome() {
       <span>${w.preview}</span>
     </button>`).join('');
   document.querySelectorAll('.world-card').forEach(b => b.onclick = () => { sfx('tap'); startRound(b.dataset.w); });
+  const best = data.bests[clockKey()];
+  $('#clockBest').textContent = (best !== undefined ? `Best: ${best} · ` : '') + `${s.testMins} min`;
   show('home');
 }
 
@@ -851,6 +1004,7 @@ function counterHTML(q) {
 function renderQuestion() {
   const q = game.qs[game.i];
   game.misses = 0; game.locked = false;
+  game.shownAt = performance.now(); game.tapped = false;
   clearTimeout(callieTimer); $('#callie').classList.remove('show');
   renderDots();
   $('#bubble').textContent = game.i === 0 ? `Let's play, ${NAME}!` : pick(['What do you think?', 'Here comes another!', 'You can do it!', 'Ready? Go!']);
@@ -876,6 +1030,7 @@ function answer(btn) {
   if (game.locked) return;
   const q = game.qs[game.i];
   const v = Number(btn.dataset.v);
+  if (!game.tapped) { game.tapped = true; logSum(q, (performance.now() - game.shownAt) / 1000, v === q.target, 'p'); }
   if (v === q.target) {
     game.locked = true;
     const gotIt = game.misses === 0;
@@ -982,6 +1137,140 @@ function finishRound() {
 }
 
 /* =========================================================
+   Beat the Clock (Test mode): as many right as possible before the dog reaches the bone
+   ========================================================= */
+let clock = null;
+const clockKey = () => { const s = data.settings; return `${s.testMins}|${s.max}|${s.ops}|${s.style}`; };
+const clockSetupLabel = key => {
+  const [m, mx, ops, st] = key.split('|');
+  return `${m} min · up to ${mx} · ${OPS_LABEL[ops] || ''}${STYLE_LABEL[st] || ''}`;
+};
+
+function startClock() {
+  clock = { dur: data.settings.testMins * 60, elapsed: 0, last: 0, right: 0, tried: 0, running: false, q: null, locked: true, timers: [] };
+  setWorldTheme('puppy');
+  $('#clockScore').textContent = '0';
+  $('#clockEq').innerHTML = '<span style="visibility:hidden">0</span>'; // empty card; the 3-2-1 sits on top
+  $('#clockChoices').innerHTML = '';
+  $('#runner').classList.remove('stopped');
+  $('#bone').classList.remove('wiggle');
+  drawTrack();
+  show('clock');
+  // 3, 2, 1, Go!
+  const cd = $('#countdown');
+  ['3', '2', '1', 'Go!'].forEach((txt, i) => clock.timers.push(setTimeout(() => {
+    if (!clock) return;
+    cd.classList.add('on'); cd.innerHTML = `<span>${txt}</span>`;
+    sfx(i < 3 ? 'tap' : 'right');
+  }, i * 750)));
+  clock.timers.push(setTimeout(() => {
+    if (!clock) return;
+    cd.classList.remove('on');
+    clock.running = true; clock.last = performance.now();
+    nextClockQ();
+    requestAnimationFrame(clockTick);
+  }, 3 * 750 + 500));
+}
+
+function drawTrack() {
+  const p = clock ? Math.min(1, clock.elapsed / clock.dur) : 0;
+  $('#trail').style.width = (p * 100) + '%';
+  $('#runner').style.left = (p * 100) + '%';
+  const left = Math.max(0, Math.ceil((clock ? clock.dur - clock.elapsed : 0)));
+  $('#timeLeft').textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`;
+  $('#bone').classList.toggle('wiggle', clock && clock.dur - clock.elapsed <= 10 && p < 1);
+}
+
+function clockTick(now) {
+  if (!clock || !clock.running) return;
+  clock.elapsed += (now - clock.last) / 1000;
+  clock.last = now;
+  drawTrack();
+  if (clock.elapsed >= clock.dur) return endClock();
+  requestAnimationFrame(clockTick);
+}
+// if the iPad/phone is put away mid-test, pause the clock rather than counting that time
+document.addEventListener('visibilitychange', () => { if (clock && clock.running && !document.hidden) clock.last = performance.now(); });
+
+function nextClockQ() {
+  if (!clock || !clock.running) return;
+  let q, tries = 0;
+  do { q = genQuestion(); tries++; } while (clock.q && q.a === clock.q.a && q.b === clock.q.b && q.op === clock.q.op && tries < 10);
+  clock.q = q; clock.locked = false; clock.shownAt = performance.now();
+  const part = k => (q.hide === k ? '<span class="slot" id="clockSlot">?</span>' : `<span>${q[k]}</span>`);
+  $('#clockEq').innerHTML = `${part('a')}<span class="op">${q.op === '+' ? '+' : '−'}</span>${part('b')}<span class="op">=</span>${part('ans')}`;
+  $('#clockChoices').innerHTML = makeChoices(q.target).map(v => `<button class="choice" data-v="${v}">${v}</button>`).join('');
+  document.querySelectorAll('#clockChoices .choice').forEach(b => b.onclick = () => clockAnswer(b));
+}
+
+function clockAnswer(btn) {
+  if (!clock || !clock.running || clock.locked) return;
+  clock.locked = true;
+  const q = clock.q, v = Number(btn.dataset.v), ok = v === q.target;
+  clock.tried++;
+  logSum(q, (performance.now() - clock.shownAt) / 1000, ok, 't');
+  const slot = $('#clockSlot');
+  if (ok) {
+    clock.right++;
+    $('#clockScore').textContent = clock.right;
+    btn.classList.add('right'); sfx('tap');
+    if (slot) { slot.textContent = q.target; slot.classList.add('filled'); }
+    clock.timers.push(setTimeout(nextClockQ, 250));
+  } else {
+    // one tap only: show the right answer for a moment, then move on
+    btn.classList.add('wrong'); sfx('wrong');
+    document.querySelectorAll('#clockChoices .choice').forEach(b => { if (Number(b.dataset.v) === q.target) b.classList.add('right'); });
+    if (slot) { slot.textContent = q.target; slot.classList.add('filled'); }
+    clock.timers.push(setTimeout(nextClockQ, 900));
+  }
+}
+
+function endClock() {
+  clock.running = false;
+  clock.elapsed = clock.dur; drawTrack();
+  $('#runner').classList.add('stopped');
+  document.querySelectorAll('#clockChoices .choice').forEach(b => b.disabled = true);
+  const key = clockKey(), prev = data.bests[key];
+  const isRecord = clock.right > 0 && (prev === undefined || clock.right > prev);
+  if (isRecord) data.bests[key] = clock.right;
+  data.tests.push({ t: Date.now(), mins: data.settings.testMins, right: clock.right, tried: clock.tried, max: data.settings.max, ops: data.settings.ops, style: data.settings.style, rec: isRecord ? 1 : 0 });
+  save();
+  const result = { right: clock.right, tried: clock.tried, prev, isRecord };
+  clock.timers.push(setTimeout(() => showClockResults(result), 900));
+}
+
+function stopClock() {
+  if (!clock) return;
+  clock.running = false;
+  clock.timers.forEach(clearTimeout);
+  $('#countdown').classList.remove('on');
+  clock = null;
+}
+
+function showClockResults({ right, tried, prev, isRecord }) {
+  stopClock();
+  $('#crTitle').textContent = `You got ${right} right!`;
+  $('#crTried').textContent = `out of ${tried} tried`;
+  if (isRecord) {
+    $('#crRecord').innerHTML = `<span class="badge">🏆 New record!</span><p class="sub" style="margin:8px 0 0">${prev === undefined ? 'Your very first record!' : `Your best was ${prev}`}</p>`;
+    $('#crNote').textContent = 'A new record! Callie and I are doing a happy dance, Maddy! 🐾';
+  } else {
+    const best = prev ?? 0;
+    $('#crRecord').innerHTML = `<p class="meh">${right === best ? 'You matched your best! ⭐' : `Your best is ${best}. Try again?`}</p>`;
+    $('#crNote').textContent = 'Every go makes you quicker. Have another try! 💪';
+  }
+  show('clockResults');
+  if (isRecord) {
+    sfx('win'); confetti('puppy');
+    clearTimeout(callieTimer);
+    callieTimer = setTimeout(() => callieCheer('Well done, Maddy! New record!'), 900);
+    speak(`Time's up! You got ${right} right! Well done, Maddy! New record!`);
+  } else {
+    speak(`Time's up! You got ${right} right! Have another try!`);
+  }
+}
+
+/* =========================================================
    Sticker book
    ========================================================= */
 function renderBook() {
@@ -996,6 +1285,12 @@ function renderBook() {
         `<div class="sticker ${mine.includes(s) ? '' : 'locked'}">${s}</div>`).join('')}</div>
     </div>`;
   }).join('');
+  const bests = Object.entries(data.bests);
+  $('#bookSections').innerHTML += `<div class="book-section">
+      <h2>⏱ Beat the Clock trophies <small>${bests.length}</small></h2>
+      ${bests.length ? `<div class="trophies">${bests.map(([k, v]) => `<div class="trophy">🏆 <b>${v}</b> right · ${clockSetupLabel(k)}</div>`).join('')}</div>`
+        : '<p style="margin:0">Play Beat the Clock to win your first trophy! 🦴</p>'}
+    </div>`;
   $('#bookTotal').textContent = have ? `You have ${have} stickers! Play to collect them all ✨` : 'Play a round to win your first sticker! ✨';
   show('book');
 }
@@ -1009,6 +1304,7 @@ const SET_DEFS = [
   { key: 'ops', label: 'Type of problems', opts: [['add', '➕ Adding'], ['sub', '➖ Taking away'], ['both', '➕➖ Both']] },
   { key: 'style', label: 'Question style', opts: [['classic', 'Classic  7 + 3 = ?'], ['blank', 'Missing number  7 + ? = 10'], ['mix', 'Mix of both']] },
   { key: 'count', label: 'Questions per round', opts: [[5, '5'], [10, '10'], [15, '15']] },
+  { key: 'testMins', label: '⏱ Beat the Clock length (Test mode)', opts: [1, 2, 3, 4, 5].map(m => [m, `${m} min`]) },
   { key: 'counters', label: 'Picture counters (up to 20)', opts: [[true, 'On'], [false, 'Off']] },
   { key: 'autoRead', label: 'Read questions aloud automatically', opts: [[true, 'On'], [false, 'Off']] },
   { key: 'sound', label: 'Sounds & voice', opts: [[true, 'On'], [false, 'Off']] },
@@ -1103,7 +1399,154 @@ function renderVoiceRow() {
   };
 }
 
-function openSettings() { renderSettings(); $('#settings').classList.add('open'); }
+/* =========================================================
+   Progress tab (for Maddy's mum): accuracy and speed over time
+   ========================================================= */
+const MIN_SUMS_PER_DAY = 10, MIN_DAYS = 3, SLOW_CUTOFF = 60; // the "60-second rule"
+let progRange = 14; // days shown; 0 = all
+const dayKey = t => { const d = new Date(t); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+const fmtDay = t => new Date(t).toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+const median = arr => { if (!arr.length) return null; const a = [...arr].sort((x, y) => x - y), m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; };
+const accOf = es => es.length ? 100 * es.reduce((n, e) => n + e.ok, 0) / es.length : null;
+const speedOf = es => median(es.filter(e => e.s <= SLOW_CUTOFF).map(e => e.s)); // 60-second rule: long pauses don't count toward speed
+const fmtS = v => v === null ? '–' : (v < 10 ? v.toFixed(1) : Math.round(v)) + 's';
+const sumText = e => { const k = x => (e.h === x ? '?' : x === 'ans' ? (e.op === '+' ? e.a + e.b : e.a - e.b) : e[x]); return `${k('a')} ${e.op === '+' ? '+' : '−'} ${k('b')} = ${k('ans')}`; };
+
+function byDay(entries) {
+  const m = new Map();
+  entries.forEach(e => { const k = dayKey(e.t); if (!m.has(k)) m.set(k, []); m.get(k).push(e); });
+  return [...m.values()].map(es => ({ t: es[0].t, es, acc: accOf(es), spd: speedOf(es), mx: median(es.map(e => e.mx)) }));
+}
+
+function trendChart(days) {
+  const W = 520, H = 210, L = 44, R = 476, T = 18, B = 150;
+  const accs = days.map(d => d.acc), spds = days.map(d => d.spd).filter(v => v !== null);
+  const aMin = Math.min(50, Math.floor(Math.min(...accs) / 10) * 10);
+  const sMax = Math.max(10, Math.ceil(Math.max(...spds, 1) / 2) * 2);
+  const x = i => days.length === 1 ? (L + R) / 2 : L + i * (R - L) / (days.length - 1);
+  const ya = v => B - (v - aMin) / (100 - aMin) * (B - T);
+  const ys = v => T + (v / sMax) * (B - T); // faster = higher up
+  let g = '';
+  [0, .5, 1].forEach(f => {
+    const y = T + f * (B - T);
+    g += `<line x1="${L}" y1="${y}" x2="${R}" y2="${y}" stroke="#f2e2ec"/>`;
+    g += `<text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="#9b8a95">${Math.round(100 - f * (100 - aMin))}%</text>`;
+    g += `<text x="${R + 6}" y="${y + 4}" font-size="11" fill="#9b8a95">${Math.round(f * sMax)}s</text>`;
+  });
+  // marker where the number limit changed
+  days.forEach((d, i) => { if (i && d.mx !== days[i - 1].mx) {
+    g += `<line x1="${x(i)}" y1="${T - 6}" x2="${x(i)}" y2="${B}" stroke="#c9a6bb" stroke-dasharray="3 3"/><text x="${x(i) + 4}" y="${T + 4}" font-size="11" fill="#7a5070">Up to ${d.mx}</text>`;
+  }});
+  const line = (vals, f) => vals.map((v, i) => v === null ? null : `${x(i).toFixed(1)},${f(v).toFixed(1)}`).filter(Boolean).join(' ');
+  g += `<polyline fill="none" stroke="#D4537E" stroke-width="2" stroke-dasharray="6 4" points="${line(days.map(d => d.spd), ys)}"/>`;
+  g += `<polyline fill="none" stroke="#1D9E75" stroke-width="3" points="${line(accs, ya)}"/>`;
+  days.forEach((d, i) => {
+    g += `<circle cx="${x(i)}" cy="${ya(d.acc)}" r="4" fill="#1D9E75"><title>${fmtDay(d.t)}: ${Math.round(d.acc)}% right first try, ${fmtS(d.spd)} typical, ${d.es.length} sums</title></circle>`;
+    if (d.spd !== null) g += `<circle cx="${x(i)}" cy="${ys(d.spd)}" r="3" fill="#D4537E"/>`;
+  });
+  const step = Math.max(1, Math.ceil(days.length / 6));
+  days.forEach((d, i) => { if (i % step === 0 || i === days.length - 1) g += `<text x="${x(i)}" y="${B + 18}" text-anchor="middle" font-size="11" fill="#9b8a95">${fmtDay(d.t)}</text>`; });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H - 30}" role="img" aria-label="Accuracy and speed by day">${g}</svg>`;
+}
+
+function testChart(tests) {
+  const W = 520, H = 150, L = 44, R = 490, T = 14, B = 110;
+  const mx = Math.max(5, ...tests.map(t => t.right));
+  const x = i => tests.length === 1 ? (L + R) / 2 : L + i * (R - L) / (tests.length - 1);
+  const y = v => B - v / mx * (B - T);
+  let g = `<line x1="${L}" y1="${B}" x2="${R}" y2="${B}" stroke="#f2e2ec"/><line x1="${L}" y1="${T}" x2="${R}" y2="${T}" stroke="#f2e2ec"/>
+    <text x="${L - 6}" y="${B + 4}" text-anchor="end" font-size="11" fill="#9b8a95">0</text><text x="${L - 6}" y="${T + 4}" text-anchor="end" font-size="11" fill="#9b8a95">${mx}</text>`;
+  g += `<polyline fill="none" stroke="#E2803A" stroke-width="3" points="${tests.map((t, i) => `${x(i)},${y(t.right)}`).join(' ')}"/>`;
+  tests.forEach((t, i) => { g += `<circle cx="${x(i)}" cy="${y(t.right)}" r="${t.rec ? 6 : 4}" fill="${t.rec ? '#FFB800' : '#E2803A'}"><title>${fmtDay(t.t)}: ${t.right} right of ${t.tried}</title></circle>`; });
+  const step = Math.max(1, Math.ceil(tests.length / 6));
+  tests.forEach((t, i) => { if (i % step === 0 || i === tests.length - 1) g += `<text x="${x(i)}" y="${B + 18}" text-anchor="middle" font-size="11" fill="#9b8a95">${fmtDay(t.t)}</text>`; });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H - 15}" role="img" aria-label="Beat the Clock scores">${g}</svg>`;
+}
+
+function renderProgress() {
+  const el = $('#tabProgress');
+  const practice = data.log.filter(e => e.m === 'p');
+  const allDays = byDay(practice);
+  const qualifyingAll = allDays.filter(d => d.es.length >= MIN_SUMS_PER_DAY);
+  const cutoff = progRange ? new Date(new Date().toDateString()).getTime() - (progRange - 1) * 864e5 : 0;
+  const L = practice.filter(e => e.t >= cutoff);
+  const days = byDay(L), qDays = days.filter(d => d.es.length >= MIN_SUMS_PER_DAY);
+  const roundsSince = data.since ? data.rounds.filter(r => r.t >= data.since).length : 0;
+  let h = `<h2 class="pg-head">Maddy's progress</h2>`;
+  h += `<p class="pg-sub">${data.since ? `Tracking since ${fmtDay(data.since)} · ${roundsSince} round${roundsSince === 1 ? '' : 's'} on ${allDays.length} day${allDays.length === 1 ? '' : 's'}` : 'Tracking starts with her next round'} · on this device</p>`;
+  h += `<div class="pills">${[[14, '2 weeks'], [31, 'Month'], [0, 'All']].map(([v, l]) => `<button data-r="${v}" class="${progRange === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+
+  // headline numbers, with change vs earlier days when there's enough data
+  const acc = accOf(L), spd = speedOf(L);
+  let accDelta = '', spdDelta = '';
+  if (qDays.length >= 4) {
+    const half = Math.floor(qDays.length / 2), early = qDays.slice(0, half).flatMap(d => d.es), late = qDays.slice(-half).flatMap(d => d.es);
+    const da = Math.round(accOf(late) - accOf(early)), ds = speedOf(late) - speedOf(early);
+    accDelta = `<small class="${da >= 0 ? 'up' : 'down'}">${da >= 0 ? '+' : ''}${da} pts vs earlier days</small>`;
+    spdDelta = `<small class="${ds <= 0 ? 'up' : 'down'}">${Math.abs(ds).toFixed(1)}s ${ds <= 0 ? 'faster' : 'slower'}</small>`;
+  }
+  h += `<div class="stats">
+    <div class="stat"><b>${acc === null ? '–' : Math.round(acc) + '%'}</b><span>right first try</span>${accDelta}</div>
+    <div class="stat"><b>${fmtS(spd)}</b><span>typical time per sum</span>${spdDelta}</div>
+    <div class="stat"><b>${L.length}</b><span>sums answered</span></div></div>`;
+
+  // trend graph (only once there's enough to be meaningful)
+  if (qualifyingAll.length < MIN_DAYS) {
+    const today = practice.filter(e => dayKey(e.t) === dayKey(Date.now()));
+    h += `<div class="empty"><b>Trends appear after ${MIN_DAYS} days of play</b>
+      <p class="pg-sub" style="margin:4px 0 0">A day counts once Maddy answers ${MIN_SUMS_PER_DAY} or more sums. ${qualifyingAll.length} of ${MIN_DAYS} days so far.</p>
+      <div class="dots3">${Array.from({ length: MIN_DAYS }, (_, i) => `<span class="${i < qualifyingAll.length ? 'on' : ''}"></span>`).join('')}</div>
+      <p class="pg-sub" style="margin:0">${today.length ? `Today: ${today.length} sums · ${Math.round(accOf(today))}% right first try · ${fmtS(speedOf(today))} typical` : 'No sums yet today.'}</p></div>`;
+  } else if (qDays.length < 2) {
+    h += `<div class="empty"><b>Not enough play days in this period</b><p class="pg-sub" style="margin:4px 0 0">Try “All”.</p></div>`;
+  } else {
+    h += `<div class="chart-legend"><span><i></i>Right first try (left)</span><span><i class="dash"></i>Seconds per sum (right, higher = faster)</span></div>`;
+    h += trendChart(qDays);
+    h += `<p class="pg-caption">One plot per day she played (days with ${MIN_SUMS_PER_DAY}+ sums)</p>`;
+  }
+
+  // breakdowns + trickiest sums
+  const groups = [['Adding', L.filter(e => e.op === '+')], ['Taking away', L.filter(e => e.op === '-')],
+                  ['Classic', L.filter(e => e.h === 'ans')], ['Missing number', L.filter(e => e.h !== 'ans')]].filter(([, es]) => es.length);
+  const facts = new Map();
+  L.forEach(e => { const k = sumText(e); const f = facts.get(k) || { k, n: 0, miss: 0, t: 0 }; f.n++; f.miss += e.ok ? 0 : 1; f.t = Math.max(f.t, e.t); facts.set(k, f); });
+  const tricky = [...facts.values()].filter(f => f.n >= 2 && f.miss >= 1).sort((a, b) => b.miss / b.n - a.miss / a.n || b.miss - a.miss || b.t - a.t).slice(0, 4);
+  if (L.length) {
+    h += `<div class="pg-grid"><div><h3 class="pg-h3">By type</h3><div class="bars">${groups.map(([n, es]) => {
+      const a = Math.round(accOf(es)); return `<span>${n}</span><div class="bar"><span style="width:${a}%"></span></div><small>${a}% · ${fmtS(speedOf(es))}</small>`; }).join('')}</div></div>
+      <div><h3 class="pg-h3">Trickiest sums lately</h3>${tricky.length
+        ? `<ul class="tricky">${tricky.map(f => `<li><code>${f.k}</code><small>missed ${f.miss} of ${f.n}</small></li>`).join('')}</ul>`
+        : '<p class="pg-sub">Nothing tricky yet. A sum shows up here once she’s tried it at least twice and missed it once.</p>'}</div></div>`;
+  }
+
+  // Beat the Clock
+  h += `<h3 class="pg-h3">⏱ Beat the Clock scores</h3>`;
+  const key = clockKey();
+  const setTests = data.tests.filter(t => `${t.mins}|${t.max}|${t.ops}|${t.style}` === key && t.t >= cutoff);
+  const bests = Object.entries(data.bests);
+  if (!data.tests.length) h += `<p class="pg-sub">No tests yet. Scores appear here after Maddy plays Beat the Clock.</p>`;
+  else {
+    if (setTests.length >= 2) {
+      h += testChart(setTests);
+      h += `<p class="pg-caption">One plot per test at current settings (${clockSetupLabel(key)}) · gold = new record</p>`;
+    } else h += `<p class="pg-sub">Play Beat the Clock twice at the current settings (${clockSetupLabel(key)}) to see a graph.</p>`;
+    h += `<div class="trophies">${bests.map(([k, v]) => `<div class="trophy">🏆 <b>${v}</b> · ${clockSetupLabel(k)}</div>`).join('')}</div>`;
+  }
+  const older = data.rounds.filter(r => !data.since || r.t < data.since).length;
+  if (older) h += `<p class="pg-note">${older} earlier round${older === 1 ? '' : 's'} (before tracking started) count in the Settings summary but had no timing, so they’re left off these charts.</p>`;
+  el.innerHTML = h;
+  el.querySelectorAll('.pills button').forEach(b => b.onclick = () => { progRange = Number(b.dataset.r); renderProgress(); });
+}
+
+function setTab(which) {
+  $('#tabSettings').hidden = which !== 'settings';
+  $('#tabProgress').hidden = which !== 'progress';
+  $('#tabBtnSettings').classList.toggle('on', which === 'settings');
+  $('#tabBtnProgress').classList.toggle('on', which === 'progress');
+  if (which === 'progress') renderProgress();
+}
+
+function openSettings() { renderSettings(); setTab('settings'); $('#settings').classList.add('open'); }
 function closeSettings() { $('#settings').classList.remove('open'); renderHome(); }
 
 /* =========================================================
@@ -1116,9 +1559,13 @@ hb.addEventListener('pointerdown', startHold);
 ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => hb.addEventListener(ev, cancelHold));
 hb.addEventListener('contextmenu', e => e.preventDefault());
 $('#closeSettings').onclick = closeSettings;
+$('#tabBtnSettings').onclick = () => setTab('settings');
+$('#tabBtnProgress').onclick = () => setTab('progress');
 $('#resetBtn').onclick = () => {
-  if (confirm("Reset all of Maddy's stars, stickers and history? Settings are kept.")) {
-    data.rounds = []; data.stickers = JSON.parse(JSON.stringify(DEFAULTS.stickers)); save(); renderSettings();
+  if (confirm("Reset all of Maddy's stars, stickers, Beat the Clock records and progress history? Settings are kept. This can't be undone.")) {
+    data.rounds = []; data.stickers = JSON.parse(JSON.stringify(DEFAULTS.stickers));
+    data.log = []; data.tests = []; data.bests = {}; data.since = null;
+    save(); renderSettings();
   }
 };
 $('#toBook').onclick = () => { sfx('tap'); renderBook(); };
@@ -1129,7 +1576,12 @@ $('#againBtn').onclick = () => startRound(game.world);
 $('#quitBtn').onclick = () => { speechSynthesis?.cancel?.(); game = null; renderHome(); };
 $('#nextBtn').onclick = next;
 $('#sayBtn').onclick = () => { const q = game.qs[game.i]; speak(askText(q)); };
-['#homeCallie', '#letterCallie', '#callieDog'].forEach(s => $(s).innerHTML = SVG.callie);
+['#homeCallie', '#letterCallie', '#callieDog', '#clockLetterCallie', '#runnerDog'].forEach(s => $(s).innerHTML = SVG.callie);
+$('#clockBtn').onclick = () => { sfx('tap'); startClock(); };
+$('#clockQuit').onclick = () => { speechSynthesis?.cancel?.(); stopClock(); renderHome(); }; // quitting early saves nothing
+$('#clockSay').onclick = () => { if (clock && clock.q) speak(askText(clock.q)); };
+$('#crAgain').onclick = () => startClock();
+$('#crHome').onclick = renderHome;
 $('#homeCallie').parentElement.onclick = () => { callieCheer('Woof! Hi Maddy! 💖'); speak('Woof! Hi Maddy!'); };
 
 renderHome();

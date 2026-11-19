@@ -52,6 +52,32 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - **Not yet verified on a real iPhone/iPad** (silent-switch sound, first-tap unlock, voices) — needs a hosted link to test.
 - **Hosting is now required**: iPhone/iPad/Windows can't open a file on Matt's Mac. → Solved with GitHub Pages (see below).
 
+### Session 2 (cont.) — Built: Beat the Clock + Progress tab (PRD v1.7) — committed, NOT pushed
+- Built everything agreed (see the design notes below and PRD §5.5–5.6). Demo shown to Matt with screenshots; pretend data loaded only in the local demo (port 8765), never live.
+- **Data safety for Maddy's iPad (her live save):** tested with the *exact* live version (c5ba82c, byte-identical to the site): played 3 real rounds with it, then opened the new version at the same address → save untouched by just opening, all stickers/rounds/settings identical, backup copy created; new rounds/tests then *added* to her stickers (5 → 7). Same origin (mvprice3.github.io) and same key `maddyMathParty.v1`, so her iPad's data carries over.
+- Safety features: one-off backup key `maddyMathParty.v1.backup-before-tracking`; unreadable saves copied aside; `load()` keeps unknown fields; `navigator.storage.persist()`.
+- Known caveat told to Matt: Safari may clear site data after ~7 days unused unless the game is on the Home Screen.
+- If an old copy of the game is still open in a Safari tab when the update goes live, that tab keeps running old code until reloaded — stickers are safe, but the old code would drop the new tracking fields on its next save. Reload the page after pushing.
+- Fixed during demo: the 3-2-1 countdown overlapped "Ready?" → card is now blank during the countdown.
+- Local test servers in `.claude/launch.json`: "maddy-math" (project, port 8765) and "maddy-compat" (scratchpad copy of live vs new, port 8766).
+
+### Session 2 (cont.) — Designs agreed (now built, see above)
+**Progress tab (for Maddy's mum)** — wireframe approved in principle:
+- New "Progress" tab next to Settings in the grown-up area (behind the hold gate).
+- Metrics: accuracy = % right on first tap; speed = median seconds from sum appearing to first tap. **60-second rule:** sums taking >60 s don't count toward speed (she probably walked away) but still count for accuracy. Matt OK'd 60 s.
+- Graph appears after **3 play days with 10+ sums each**; one plot per play day. Caption wording (Matt): **"One plot per day she played (days with 10+ sums)"**. Marker on the graph when the number limit changes.
+- Also: breakdown by adding/taking away and classic/missing number; "trickiest sums lately".
+- Needs new per-question logging (time, sum, op, style). Old rounds have no timing → excluded from charts; tracking starts when the update reaches her device.
+- Limitation: data is per device — mum must look on the device Maddy plays on.
+
+**Timed test mode (mum's request)** — decisions from Matt:
+- Shown to Maddy as **"⏱ Beat the Clock"** (called Test mode in grown-up settings). **Always on the home screen** (no on/off switch).
+- **Default 1 minute; grown-up can choose 1–5 minutes.**
+- Timer = **a dog running towards a bone** (coloured progress bar), not ticking numbers; no buzzer.
+- **Keep the timer small and calm (Matt: "not too big, no undue pressure"):** slim track (~8–10px tall), small dog (~32px), tucked in the top bar beside the score, well away from the sum and answers; soft colours; no flashing, no colour change to red, no countdown numbers for Maddy (the "time left" text is tiny/grey); in the last 10 s only a gentle bone wiggle — no sound. The sum and answer buttons stay the biggest things on screen.
+- Proposed (not yet confirmed): 3-2-1 countdown; same difficulty as practice settings; one tap per sum (wrong → show answer briefly, move on, no retries); no counters / auto-read; results "You got 14 right!" + personal best per difficulty setup, trophy + Callie on new record; **no stickers** (stickers stay for practice), trophy shelf instead; separate "Test scores" section in Progress tab; PRD "no timer" rule becomes "no timer in practice — only in Beat the Clock".
+- Plan: wireframe first, then build Progress tab + Beat the Clock together and push live with the (committed, unpushed) missing-number update.
+
 ### Session 2 — 19 Nov 2026: missing-number questions (PRD v1.6)
 - Matt asked for **fill-in-the-blank** questions (e.g. `1 + ? = 3`) as an **option**, keeping the normal game.
 - Added grown-up setting **Question style: Classic (default) / Missing number / Mix of both**. Questions carry `hide` ('ans' | 'a' | 'b') and `target` (the number to find). Missing number hides the 2nd number ~70%, the 1st ~30%.

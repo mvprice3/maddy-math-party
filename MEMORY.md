@@ -52,7 +52,13 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - **Not yet verified on a real iPhone/iPad** (silent-switch sound, first-tap unlock, voices) — needs a hosted link to test.
 - **Hosting is now required**: iPhone/iPad/Windows can't open a file on Matt's Mac. → Solved with GitHub Pages (see below).
 
-### Session 2 (cont.) — Built: Beat the Clock + Progress tab (PRD v1.7) — committed, NOT pushed
+### Session 2 (cont.) — 🚀 v2 released (19 Nov 2026)
+- Matt approved and **pushed v2** (commits 1e69dd8 missing numbers + 9dd0b29 Beat the Clock & Progress tab). GitHub Pages built 9dd0b29; checked on the live site: 4 worlds, Beat the Clock button, Progress tab, test starts, no errors.
+- **"v2"** = Matt's name for this release (for Maddy's mum): missing-number questions, Beat the Clock, Progress tab. v1 = everything before (4 worlds, stickers, Callie, voice, iPhone/iPad/Windows).
+- Wrote Matt a plain-English v2 summary to send Maddy's mum (includes: reload once on the iPad, add to Home Screen, how to open Progress, stickers kept).
+- Maddy plays on an **iPad**.
+
+### Session 2 (cont.) — Built: Beat the Clock + Progress tab (PRD v1.7) — pushed as v2 (see above)
 - Built everything agreed (see the design notes below and PRD §5.5–5.6). Demo shown to Matt with screenshots; pretend data loaded only in the local demo (port 8765), never live.
 - **Data safety for Maddy's iPad (her live save):** tested with the *exact* live version (c5ba82c, byte-identical to the site): played 3 real rounds with it, then opened the new version at the same address → save untouched by just opening, all stickers/rounds/settings identical, backup copy created; new rounds/tests then *added* to her stickers (5 → 7). Same origin (mvprice3.github.io) and same key `maddyMathParty.v1`, so her iPad's data carries over.
 - Safety features: one-off backup key `maddyMathParty.v1.backup-before-tracking`; unreadable saves copied aside; `load()` keeps unknown fields; `navigator.storage.persist()`.

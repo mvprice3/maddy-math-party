@@ -1,6 +1,6 @@
 # Maddy's Math Party — Product Requirements Doc
 
-**Version:** 1.7 · **Date:** 19 Nov 2026 · **Status:** built, awaiting push (adds Beat the Clock test mode and a Progress tab for Maddy's mum)
+**Version:** 1.7 · **Date:** 19 Nov 2026 · **Status:** live as **v2** on 19 Nov 2026 (missing-number questions, Beat the Clock test mode, Progress tab for Maddy's mum)
 
 ## 1. Summary
 A playful website where Maddy (age 6) practises addition and subtraction. It's wrapped in the things she loves — fashion dolls, surprise-ball dolls and squishy dumpling toys — so practice feels like play. Numbers start at up to 12, including 12 (where she is today) and a grown-up can raise the limit as she grows.

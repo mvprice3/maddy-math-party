@@ -52,6 +52,15 @@ A math practice website for Maddy (6, niece) — addition & subtraction, themed 
 - **Not yet verified on a real iPhone/iPad** (silent-switch sound, first-tap unlock, voices) — needs a hosted link to test.
 - **Hosting is now required**: iPhone/iPad/Windows can't open a file on Matt's Mac. → Solved with GitHub Pages (see below).
 
+### Session 2 — 19 Nov 2026: missing-number questions (PRD v1.6)
+- Matt asked for **fill-in-the-blank** questions (e.g. `1 + ? = 3`) as an **option**, keeping the normal game.
+- Added grown-up setting **Question style: Classic (default) / Missing number / Mix of both**. Questions carry `hide` ('ans' | 'a' | 'b') and `target` (the number to find). Missing number hides the 2nd number ~70%, the 1st ~30%.
+- `?` box sits wherever the blank is; answers are built around the missing number; speech asks "7 plus what makes 10?"; counters show the unknown part as red ❓ tiles (❔ was too faint); after 2 misses the full sum is shown.
+- Home chip shows "· missing numbers" / "· mixed"; rounds now save `style`, shown in progress history.
+- **Matt's question: does updating wipe her scores? No.** Progress lives in her browser's localStorage under `maddyMathParty.v1`; the update doesn't change that name and `load()` merges new settings with defaults. Tested by saving progress in the *old* format, loading the new version: stickers/rounds/max kept, style defaulted to Classic; a new round then added to (not replaced) her stickers and history.
+- Testing tip: the local-file preview has no localStorage; use `.claude/launch.json` → "maddy-math" (python http.server on port 8765) to test saving. `.claude/` is git-ignored.
+- Rule going forward: **never rename the localStorage key** (`maddyMathParty.v1`) — that would make her progress look lost.
+
 ### Session 1 (cont.) — iPhone voice not playing (fix attempt)
 - Matt: no voice on his iPhone, even after downloading Kate. Couldn't test on a real iPhone (no iOS simulator on this Mac), so fixed the known Safari/iPhone speech pitfalls:
   1. First question is now spoken **inside Maddy's tap** (iOS blocks speech not started by a tap; it used to be delayed 350 ms by a timer).

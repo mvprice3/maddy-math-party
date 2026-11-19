@@ -1,6 +1,6 @@
 # Maddy's Math Party — Product Requirements Doc
 
-**Version:** 1.5 · **Date:** 17 Nov 2026 · **Status:** prototype built (adds a fourth world: Callie's Puppy Park)
+**Version:** 1.6 · **Date:** 19 Nov 2026 · **Status:** live (adds optional missing-number questions)
 
 ## 1. Summary
 A playful website where Maddy (age 6) practises addition and subtraction. It's wrapped in the things she loves — fashion dolls, surprise-ball dolls and squishy dumpling toys — so practice feels like play. Numbers start at up to 12, including 12 (where she is today) and a grown-up can raise the limit as she grows.
@@ -44,6 +44,15 @@ Each world has its own mascot, colours and cheer phrases.  Find a way to incorpo
 - **Wrong:** gentle wobble, "Almost! Try again" — wrong bubble fades out. After 2 misses the answer is shown with counters ("7 and 3 makes 10"), no star, move on.
 - **Subtraction never goes below zero.**
 
+### 5.1a Question styles (grown-up setting)
+- **Classic** (default): `7 + 3 = ?` — the game exactly as it was.
+- **Missing number** (fill in the blank): `7 + ? = 10`, `? + 3 = 10`, `10 − ? = 7`, `? − 3 = 7`. The second number is hidden more often (~70%) because it's the gentler form.
+- **Mix of both**: about half classic, half missing number.
+- The `?` box moves to wherever the blank is. Answer bubbles are built around the missing number.
+- Read-aloud asks naturally: "7 plus *what* makes 10?", "10 take away *what* leaves 7?".
+- Picture counters show the unknown part as red ❓ tiles (e.g. 7 dumplings + ❓❓❓). After 2 misses the full sum is shown in pictures and words ("7 + 3 makes 10!").
+- Same stars, stickers and Callie praise as classic. The home-screen label and the progress history show which style was played.
+
 ### 5.2 End of round
 - Stars earned (out of 10) and a **new sticker** for the world's sticker book (1 sticker for finishing, a bonus sparkly one for 8+ stars).
 - **Callie's "Well done, Maddy!"** — Maddy's Nova Scotia Duck Tolling Retriever, Callie, pops up with a woof and says "Well done, Maddy!" (on screen and spoken) **only when Maddy succeeds**, i.e. earns at least half the stars in the round. Below that, Callie isn't shown popping up and the screen says "Great try, Maddy!" instead. Make it feel very personal.
@@ -57,6 +66,7 @@ Each world has its own mascot, colours and cheer phrases.  Find a way to incorpo
 ### 5.4 Grown-up settings (behind a "hold for 2 seconds" gate)
 - **Numbers up to:** 5, 10, **12 (default — up to and including 12)**, 15, 20, 30, 50, 100. Answers and both numbers stay within this limit, and the limit itself is included (e.g. 7 + 5 = 12 and 12 − 4 can appear).
 - **Problem types:** Adding ➕ / Taking away ➖ / Both.
+- **Question style:** Classic / Missing number / Mix of both (see 5.1a). Default Classic.
 - **Questions per round:** 5 / 10 / 15.
 - **Picture counters:** on / off (automatically hidden above 20).
 - **Read questions aloud automatically:** on / off. **Sounds:** on / off.
@@ -90,11 +100,12 @@ Because neither device can open a file stored on Uncle Matt's Mac, the game **mu
 - Read-aloud via the browser's built-in speech (Speech Synthesis). **Voice: British, female, as natural/human as possible.** The game automatically picks the best British female voice on the device (preferring "Natural", "Premium" and "Enhanced" voices, and avoiding novelty/robotic ones), with a slightly slower, warm delivery. A grown-up can pick a different voice and test it in settings.
   - Voice quality depends on the device: on iPad/iPhone, download **Serena (Premium)** or **Kate (Enhanced)** under Settings → Accessibility → Spoken Content → Voices → English (UK). On a computer, Microsoft Edge's "Natural" voices (e.g. Libby, Sonia) and Chrome's "Google UK English Female" sound the most human.
 - Progress & settings in `localStorage` (per device). No data leaves the device.
-- Hosting options: open the file directly, or publish as a private link for Maddy's tablet.
+- **Updates never wipe progress:** the save name (`maddyMathParty.v1`) stays the same; new settings are merged in with safe defaults, so stars, stickers and history carry over when the live site is updated.
+- Hosted on GitHub Pages: https://mvprice3.github.io/maddy-math-party/ (public repo `mvprice3/maddy-math-party`).
 
 ## 9. Future ideas (v2+)
 - Typing answers on a number pad (harder mode) once she's confident.
-- Missing-number problems (`5 + ? = 9`) and number bonds.
+- Number bonds (e.g. all the pairs that make 10). *(Missing-number problems are now built — see 5.1a.)*
 - Dress-up reward: spend stars to dress a doll or decorate a dumpling.
 - Gentle timed "speed challenge" mode for older Maddy.
 - Adaptive difficulty that focuses on facts she gets wrong most.

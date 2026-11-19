@@ -130,6 +130,7 @@
   .cgroup { display: grid; grid-template-columns: repeat(5, auto); gap: 2px 4px; background: var(--soft); padding: 8px 10px; border-radius: 18px; }
   .cgroup .c { font-size: var(--csize, 2rem); line-height: 1.1; position: relative; }
   .cgroup .c.gone { opacity: .3; }
+  .cgroup .c.mystery { opacity: .9; }
   .cgroup .c.gone::after { content: '✖'; position: absolute; inset: 0; display: grid; place-items: center; color: #c2185b; font-size: .8em; opacity: 1; }
   .cplus { font-size: 2.2rem; font-weight: 800; color: var(--accent); }
 
@@ -524,7 +525,7 @@ const NAME = 'Maddy';
    ========================================================= */
 const STORE = 'maddyMathParty.v1';
 const DEFAULTS = {
-  settings: { max: 12, ops: 'both', count: 10, counters: true, autoRead: true, sound: true, voice: '' },
+  settings: { max: 12, ops: 'both', count: 10, counters: true, autoRead: true, sound: true, voice: '', style: 'classic' },
   stickers: { doll: [], surprise: [], dumpling: [], puppy: [] },
   rounds: [],
 };
@@ -737,10 +738,11 @@ function confetti(world) {
    Home
    ========================================================= */
 const OPS_LABEL = { add: '➕ adding', sub: '➖ taking away', both: '➕ ➖' };
+const STYLE_LABEL = { classic: '', blank: ' · missing numbers', mix: ' · mixed' };
 function renderHome() {
   setWorldTheme('home');
   const s = data.settings;
-  $('#levelChip').textContent = `Numbers up to ${s.max} · ${OPS_LABEL[s.ops]}`;
+  $('#levelChip').textContent = `Numbers up to ${s.max} · ${OPS_LABEL[s.ops]}${STYLE_LABEL[s.style] || ''}`;
   $('#worlds').innerHTML = Object.entries(WORLDS).map(([k, w]) => `
     <button class="world-card" data-w="${k}">
       <div class="mascot">${SVG[k]}</div>
@@ -766,14 +768,21 @@ function genQuestion() {
     b = rint(1, a);
     if (b === a && Math.random() < .7) b = rint(1, a - 1); // answer 0 only sometimes
   }
-  return { a, b, op, ans: op === '+' ? a + b : a - b };
+  const q = { a, b, op, ans: op === '+' ? a + b : a - b, hide: 'ans' };
+  // Question style: classic "7 + 3 = ?" or missing number "7 + ? = 10" / "? + 3 = 10"
+  const style = data.settings.style;
+  if (style === 'blank' || (style === 'mix' && Math.random() < .5)) {
+    q.hide = Math.random() < .7 ? 'b' : 'a'; // "7 + ? = 10" is the gentler form, so it comes up more
+  }
+  q.target = q[q.hide]; // the number Maddy has to find
+  return q;
 }
 function genRound(n) {
   const qs = [], seen = new Set();
   let tries = 0;
   while (qs.length < n && tries < 500) {
     tries++;
-    const q = genQuestion(), key = q.a + q.op + q.b;
+    const q = genQuestion(), key = q.a + q.op + q.b + q.hide;
     if (seen.has(key) && tries < 400) continue;
     seen.add(key); qs.push(q);
   }
@@ -792,6 +801,11 @@ function makeChoices(ans) {
   return shuffle([...set]);
 }
 const say = q => `${q.a} ${q.op === '+' ? 'plus' : 'take away'} ${q.b}`;
+function askText(q) {
+  if (q.hide === 'ans') return `What is ${say(q)}?`;
+  const w = k => (q.hide === k ? 'what' : q[k]);
+  return q.op === '+' ? `${w('a')} plus ${w('b')} makes ${q.ans}?` : `${w('a')} take away ${w('b')} leaves ${q.ans}?`;
+}
 
 /* =========================================================
    Play
@@ -823,11 +837,14 @@ function counterHTML(q) {
   const size = total > 14 ? '1.6rem' : total > 9 ? '2rem' : '2.6rem';
   const items = (e, n, goneFrom = Infinity) =>
     Array.from({ length: n }, (_, i) => `<span class="c ${i >= goneFrom ? 'gone' : ''}">${e}</span>`).join('');
+  const mystery = n => Array.from({ length: n }, () => '<span class="c mystery">❓</span>').join('');
   if (q.op === '+') {
-    return `<div class="cgroup" style="--csize:${size}">${items(e1, q.a)}</div>
+    return `<div class="cgroup" style="--csize:${size}">${q.hide === 'a' ? mystery(q.a) : items(e1, q.a)}</div>
             <div class="cplus">+</div>
-            <div class="cgroup" style="--csize:${size}">${items(e2, q.b)}</div>`;
+            <div class="cgroup" style="--csize:${size}">${q.hide === 'b' ? mystery(q.b) : items(e2, q.b)}</div>`;
   }
+  if (q.hide === 'b') // 10 − ? = 7: seven left, the taken-away ones are a mystery
+    return `<div class="cgroup" style="--csize:${size}">${items(e1, q.ans)}${mystery(q.b)}</div>`;
   return `<div class="cgroup" style="--csize:${size}">${items(e1, q.a, q.a - q.b)}</div>`;
 }
 
@@ -837,15 +854,16 @@ function renderQuestion() {
   clearTimeout(callieTimer); $('#callie').classList.remove('show');
   renderDots();
   $('#bubble').textContent = game.i === 0 ? `Let's play, ${NAME}!` : pick(['What do you think?', 'Here comes another!', 'You can do it!', 'Ready? Go!']);
-  $('#equation').innerHTML = `<span>${q.a}</span><span class="op">${q.op === '+' ? '+' : '−'}</span><span>${q.b}</span><span class="op">=</span><span class="slot" id="slot">?</span>`;
+  const part = k => (q.hide === k ? '<span class="slot" id="slot">?</span>' : `<span>${q[k]}</span>`);
+  $('#equation').innerHTML = `${part('a')}<span class="op">${q.op === '+' ? '+' : '−'}</span>${part('b')}<span class="op">=</span>${part('ans')}`;
   $('#counters').innerHTML = counterHTML(q);
   $('#nextBtn').style.display = 'none';
-  $('#choices').innerHTML = makeChoices(q.ans).map(v => `<button class="choice" data-v="${v}">${v}</button>`).join('');
+  $('#choices').innerHTML = makeChoices(q.target).map(v => `<button class="choice" data-v="${v}">${v}</button>`).join('');
   document.querySelectorAll('.choice').forEach(b => b.onclick = () => answer(b));
   if (data.settings.autoRead) {
     // first question: speak right inside Maddy's tap so iPhone allows it; later ones after a short pause
-    if (game.i === 0) speak(`What is ${say(q)}?`);
-    else setTimeout(() => speak(`What is ${say(q)}?`), 350);
+    if (game.i === 0) speak(askText(q));
+    else setTimeout(() => speak(askText(q)), 350);
   }
 }
 
@@ -858,12 +876,12 @@ function answer(btn) {
   if (game.locked) return;
   const q = game.qs[game.i];
   const v = Number(btn.dataset.v);
-  if (v === q.ans) {
+  if (v === q.target) {
     game.locked = true;
     const gotIt = game.misses === 0;
     game.results[game.i] = gotIt;
     btn.classList.add('right');
-    fillSlot(q.ans);
+    fillSlot(q.target);
     sfx('right'); confetti(game.world); bounceMascot('bounce');
     const cheer = gotIt ? pick(WORLDS[game.world].cheers) : 'Yes! You worked it out!';
     $('#bubble').textContent = cheer + (gotIt ? ' ⭐' : ' 💗');
@@ -889,17 +907,17 @@ function reveal(q) {
   game.results[game.i] = false;
   document.querySelectorAll('.choice').forEach(b => {
     b.disabled = true;
-    if (Number(b.dataset.v) === q.ans) b.classList.add('right');
+    if (Number(b.dataset.v) === q.target) b.classList.add('right');
   });
-  fillSlot(q.ans);
+  fillSlot(q.target);
   const verb = q.op === '+' ? 'makes' : 'leaves';
   const sym = q.op === '+' ? '+' : '−';
   $('#bubble').textContent = `${q.a} ${sym} ${q.b} ${verb} ${q.ans}! Let's keep going 💗`;
   speak(`${say(q)} ${verb} ${q.ans}. Let's keep going!`);
-  // make sure the picture helpers are visible for learning
-  if (!$('#counters').innerHTML && q.a <= 20 && q.b <= 20) {
+  // show the whole sum in pictures (blank filled in) so she can see how it works
+  if (q.a <= 20 && q.b <= 20) {
     const prev = data.settings.counters; data.settings.counters = true;
-    $('#counters').innerHTML = counterHTML(q); data.settings.counters = prev;
+    $('#counters').innerHTML = counterHTML({ ...q, hide: 'ans' }); data.settings.counters = prev;
   }
   renderDots();
   $('#nextBtn').style.display = 'flex';
@@ -931,7 +949,7 @@ function finishRound() {
   const total = game.qs.length;
   const stars = game.results.filter(r => r === true).length;
   const ratio = stars / total;
-  data.rounds.push({ t: Date.now(), world: game.world, stars, total, max: data.settings.max, ops: data.settings.ops });
+  data.rounds.push({ t: Date.now(), world: game.world, stars, total, max: data.settings.max, ops: data.settings.ops, style: data.settings.style });
   if (data.rounds.length > 100) data.rounds = data.rounds.slice(-100);
   const got = award(game.world, ratio >= .8 ? 2 : 1);
   save();
@@ -989,6 +1007,7 @@ const MAX_OPTS = [5, 10, 12, 15, 20, 30, 50, 100];
 const SET_DEFS = [
   { key: 'max', label: 'Numbers go up to', opts: MAX_OPTS.map(v => [v, v === 12 ? '12 (starting level)' : String(v)]) },
   { key: 'ops', label: 'Type of problems', opts: [['add', '➕ Adding'], ['sub', '➖ Taking away'], ['both', '➕➖ Both']] },
+  { key: 'style', label: 'Question style', opts: [['classic', 'Classic  7 + 3 = ?'], ['blank', 'Missing number  7 + ? = 10'], ['mix', 'Mix of both']] },
   { key: 'count', label: 'Questions per round', opts: [[5, '5'], [10, '10'], [15, '15']] },
   { key: 'counters', label: 'Picture counters (up to 20)', opts: [[true, 'On'], [false, 'Off']] },
   { key: 'autoRead', label: 'Read questions aloud automatically', opts: [[true, 'On'], [false, 'Off']] },
@@ -1042,7 +1061,7 @@ function renderSettings() {
     <div class="stat"><b>${acc}</b><span>first-try right (last 5)</span></div>`;
   $('#history').innerHTML = R.slice(-5).reverse().map(r => {
     const d = new Date(r.t);
-    return `<li>${d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} · ${WORLDS[r.world]?.name || r.world} · ${r.stars}/${r.total} ⭐ · up to ${r.max} ${OPS_LABEL[r.ops] || ''}</li>`;
+    return `<li>${d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} · ${WORLDS[r.world]?.name || r.world} · ${r.stars}/${r.total} ⭐ · up to ${r.max} ${OPS_LABEL[r.ops] || ''}${STYLE_LABEL[r.style] || ''}</li>`;
   }).join('') || '<li style="list-style:none;margin-left:-18px">No rounds yet.</li>';
 }
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1109,7 +1128,7 @@ $('#homeBtn').onclick = renderHome;
 $('#againBtn').onclick = () => startRound(game.world);
 $('#quitBtn').onclick = () => { speechSynthesis?.cancel?.(); game = null; renderHome(); };
 $('#nextBtn').onclick = next;
-$('#sayBtn').onclick = () => { const q = game.qs[game.i]; speak(`What is ${say(q)}?`); };
+$('#sayBtn').onclick = () => { const q = game.qs[game.i]; speak(askText(q)); };
 ['#homeCallie', '#letterCallie', '#callieDog'].forEach(s => $(s).innerHTML = SVG.callie);
 $('#homeCallie').parentElement.onclick = () => { callieCheer('Woof! Hi Maddy! 💖'); speak('Woof! Hi Maddy!'); };
 
